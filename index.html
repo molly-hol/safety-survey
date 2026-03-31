@@ -943,7 +943,8 @@
     document.getElementById('progressLabel').textContent = `Question ${Math.min(answered, total)} of ${total}`;
   }
 
-  function submitSurvey() {
+function submitSurvey() {
+
   const formData = new FormData();
 
   for (const key in answers) {
@@ -959,7 +960,27 @@
   })
   .then(response => {
     if (response.ok) {
+
+      // Hide survey
+      document.querySelectorAll('.question-block, .section-strip').forEach(el => el.style.display = 'none');
+      document.getElementById('submitWrap').style.display = 'none';
+
+      // Show thank you
+      const ty = document.getElementById('thankYou');
+      ty.style.display = 'block';
+
+      // Update progress bar
+      document.getElementById('progressFill').style.width = '100%';
+      document.getElementById('progressLabel').textContent = 'Complete — Thank you!';
+
+    } else {
+      alert("Something went wrong. Please try again.");
     }
+  })
+  .catch(() => {
+    alert("Submission failed. Please check your connection.");
+  });
+}
 
     // Hide form, show thank you
     document.querySelectorAll('.question-block, .section-strip').forEach(el => el.style.display = 'none');
